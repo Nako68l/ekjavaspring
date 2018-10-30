@@ -9,6 +9,9 @@ public class LogInRequestBody {
         this.password = password;
     }
 
+    public LogInRequestBody() {
+    }
+
     public String getLogin() {
         return login;
     }

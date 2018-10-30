@@ -1,9 +1,12 @@
 package com.example.ekjava;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
-
+@Service
 public class UserUtil {
     private UserRepository userRepository;
 
@@ -11,7 +14,7 @@ public class UserUtil {
     private static Predicate<String> emailValidator = (String email) -> email.matches("^[\\w-+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$");
     private static Predicate<String> passwordValidator = (String pass) -> pass.matches("^(?=.*\\d)(?=.*[a-zA-Z])(?=.*[#?!@$%^&*-])[a-zA-Z0-9#?!@$%^&*-]{5,10}$");
 
-    public UserUtil(UserRepository userRepository) {
+    public UserUtil(@Autowired UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -22,13 +25,23 @@ public class UserUtil {
         return this.userRepository.create(name, email, password, birthday);
     }
 
-    public User getUser(Long id){
+    public User getUser(Long id) {
         return this.userRepository.findById(id);
     }
 
-    public User getUserByLogin(String login){
+    public User getUserByLogin(String login) throws Error{
         return this.userRepository.findByEmail(login);
     }
+
+    public User logInUser(String login, String password) throws Error{
+        User user = this.getUserByLogin(login);
+        if (user.getPassword().equals(password)) {
+            return user;
+        } else {
+            throw new Error("Wrong password");
+        }
+    }
+
 
     private static <T> T validate(T value, Predicate<T> validator) {
         if (!validator.test(value)) {

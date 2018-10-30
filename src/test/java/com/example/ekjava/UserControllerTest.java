@@ -28,18 +28,16 @@ public class UserControllerTest {
     private String correctPassword = "absd#123";
     private LocalDate correctBirthday = LocalDate.of(2000,5,23);
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate = new TestRestTemplate();
 
-    @Autowired
-    private UserUtil userUtil;
+    private UserUtil userUtil = Mockito.mock(UserUtil.class);
 
     @Before
     public void beforeSetup(){
-        Mockito.when(userUtil.createUser(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.any()))
+        Mockito.when(userUtil.createUser(correctName,correctEmail,correctPassword,correctBirthday))
                 .thenReturn(1L);
-        Mockito.when(userUtil.getUserByLogin(Mockito.anyString()))
-                .thenReturn(new User(correctName, correctPassword, correctPassword, correctBirthday));
+        Mockito.when(userUtil.getUserByLogin(correctEmail))
+                .thenReturn(new User(correctName, correctEmail, correctPassword, correctBirthday));
     }
 
     @Test

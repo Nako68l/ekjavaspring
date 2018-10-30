@@ -1,15 +1,14 @@
 package com.example.ekjava;
 
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDate;
 
 public class SignUpRequestBody {
-    String name;
-    String login;
-    String password;
+    private String name;
+    private String login;
+    private String password;
     private String confirmationPassword;
-    LocalDate birthday;
+    private LocalDate birthday;
 
     public SignUpRequestBody(String name, String login, String password, String confirmationPassword, LocalDate birthday) {
         this.name = name;
@@ -19,9 +18,7 @@ public class SignUpRequestBody {
         this.birthday = birthday;
     }
 
-    private boolean passwordsAreEqual(String password, String confirmationPassword) {
-        return password.equals(confirmationPassword);
-    }
+    public SignUpRequestBody(){}
 
     public String getName() {
         return name;
@@ -32,11 +29,11 @@ public class SignUpRequestBody {
     }
 
     public String getPassword() {
-        if (passwordsAreEqual(password, confirmationPassword)) {
-            return password;
-        } else {
-            throw new Error("passwords are not equal");
-        }
+        return password;
+    }
+
+    public String getConfirmationPassword() {
+        return confirmationPassword;
     }
 
     public LocalDate getBirthday() {
